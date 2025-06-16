@@ -65,7 +65,7 @@ networks:
 ```
 
 #### Docker-Befehle und Bedeutung
-```text
+```bash
 docker compose up --build
 ```
 Dieser Befehl führt unter anderem folgende Schritte aus:
@@ -75,10 +75,10 @@ Dieser Befehl führt unter anderem folgende Schritte aus:
 - `docker logs`: Zeigt Container-Logs
 
 #### Screenshots Teil A.a
-**info.php**
+**info.php**  
 ![info.php – lokal](1.png)
 
-**db.php**
+**db.php**  
 ![db.php – lokal](2.png)
 
 ---
@@ -131,10 +131,10 @@ networks:
 Obwohl die Aufgabe ursprünglich erwartet, dass `db.php` einen Fehler liefert, funktioniert sie korrekt. Grund: Das gepushte Image enthält bereits eine korrekte Konfiguration mit gültigem Datenbank-Hostnamen (`m347-kn04a-db`) und installiertem `mysqli`. Die Verbindung funktioniert daher wie vorgesehen.
 
 #### Screenshots Teil A.b
-**info.php**
+**info.php**  
 ![info.php – eigenes Image](3.png)
 
-**db.php**
+**db.php**  
 ![db.php – eigenes Image](4.png)
 
 ---
@@ -144,8 +144,6 @@ Obwohl die Aufgabe ursprünglich erwartet, dass `db.php` einen Fehler liefert, f
 ### Ziel
 Die Docker-Compose-Umgebung aus Teil A wurde in der Cloud (AWS EC2) automatisiert bereitgestellt. Die vollständige Installation erfolgte über ein Cloud-Init-Skript. Nach dem Start standen Webserver und Datenbank direkt zur Verfügung.
 
----
-
 ### Vorgehen
 
 1. Start einer EC2-Instanz mit Ubuntu 22.04 LTS (t2.micro)
@@ -153,8 +151,6 @@ Die Docker-Compose-Umgebung aus Teil A wurde in der Cloud (AWS EC2) automatisier
 3. Eingabe des Cloud-Init-Skripts im Feld "User data"
 4. Sicherheitsgruppe mit HTTP-Zugriff (Port 80) konfiguriert
 5. Aufruf der PHP-Seiten info.php und db.php über die öffentliche IP
-
----
 
 ### Screenshots
 
@@ -245,10 +241,17 @@ final_message: "Docker Compose Setup abgeschlossen!"
 
 ---
 
-### Ergebnis
+## Liste der Befehle, die `docker compose up` ausführt und deren Erklärungen
 
-Die Umgebung wurde automatisch aufgebaut und funktioniert wie gewünscht:
-- `info.php` zeigt Server- und IP-Informationen
-- `db.php` zeigt erfolgreiche Verbindung zur MariaDB-Datenbank
+| Schritt | Einzelbefehl                              | Erklärung                                                                 |
+|--------:|-------------------------------------------|---------------------------------------------------------------------------|
+| 1.      | `docker build`                            | Baut das Image für den Webserver auf Basis des Dockerfiles (nur bei `build:`) |
+| 2.      | `docker network create`                   | Erstellt das benutzerdefinierte Netzwerk mit IP-Konfiguration, falls noch nicht vorhanden |
+| 3.      | `docker volume create`                    | Erstellt benötigte Volumes automatisch, wenn sie im Compose-File deklariert sind |
+| 4.      | `docker create`                           | Erstellt die Container auf Basis der im Compose-File definierten Einstellungen |
+| 5.      | `docker start`                            | Startet die erstellten Container                                         |
+| 6.      | `docker logs`                             | Gibt bei Fehlern die Logs des Containers aus – hilfreich zur Fehlersuche |
+| 7.      | `docker ps`                               | Listet laufende Container – zur Kontrolle der gestarteten Services       |
+| 8.      | `docker inspect`                          | Prüft Details wie Netzwerkinformationen oder Umgebungsvariablen (bei Bedarf manuell) |
 
-
+Zusätzlich sorgt `--build` dafür, dass das Image neu gebaut wird, selbst wenn es schon existiert.
