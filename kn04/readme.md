@@ -243,15 +243,15 @@ final_message: "Docker Compose Setup abgeschlossen!"
 
 ## Liste der Befehle, die `docker compose up` ausführt und deren Erklärungen
 
-| Schritt | Einzelbefehl                              | Erklärung                                                                 |
-|--------:|-------------------------------------------|---------------------------------------------------------------------------|
-| 1.      | `docker build`                            | Baut das Image für den Webserver auf Basis des Dockerfiles (nur bei `build:`) |
-| 2.      | `docker network create`                   | Erstellt das benutzerdefinierte Netzwerk mit IP-Konfiguration, falls noch nicht vorhanden |
-| 3.      | `docker volume create`                    | Erstellt benötigte Volumes automatisch, wenn sie im Compose-File deklariert sind |
-| 4.      | `docker create`                           | Erstellt die Container auf Basis der im Compose-File definierten Einstellungen |
-| 5.      | `docker start`                            | Startet die erstellten Container                                         |
-| 6.      | `docker logs`                             | Gibt bei Fehlern die Logs des Containers aus – hilfreich zur Fehlersuche |
-| 7.      | `docker ps`                               | Listet laufende Container – zur Kontrolle der gestarteten Services       |
-| 8.      | `docker inspect`                          | Prüft Details wie Netzwerkinformationen oder Umgebungsvariablen (bei Bedarf manuell) |
+Der Befehl `docker compose up --build` automatisiert den Start der Container-Umgebung. Dabei führt Docker Compose im Hintergrund folgende Schritte aus – basierend auf deiner Konfiguration:
 
-Zusätzlich sorgt `--build` dafür, dass das Image neu gebaut wird, selbst wenn es schon existiert.
+| Schritt | Befehl                      | Erklärung                                                                 |
+|--------:|-----------------------------|---------------------------------------------------------------------------|
+| 1.      | `docker build`              | Baut das Webserver-Image aus dem lokalen Dockerfile (`build:` verwendet) |
+| 2.      | `docker network create`     | Erstellt das benutzerdefinierte Netzwerk `kn04-net` mit IP-Konfiguration |
+| 3.      | `docker create`             | Erstellt die Container gemäß `docker-compose.yml`                        |
+| 4.      | `docker start`              | Startet die Container                                                    |
+|
+
+ Wichtig: Das Flag `--build` sorgt dafür, dass **lokale Dockerfiles neu gebaut** werden – auch wenn ein Image bereits vorhanden ist.
+
