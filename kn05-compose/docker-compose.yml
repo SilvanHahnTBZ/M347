@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  web1:
+    image: nginx
+    container_name: nginx_web1
+    volumes:
+      - shared-vol:/usr/share/nginx/html:ro       # Named Volume (long syntax)
+      - ./index.html:/usr/share/nginx/html/index.html  # Bind Mount
+    tmpfs:
+      - /tmp
+
+  web2:
+    image: nginx
+    container_name: nginx_web2
+    volumes:
+      - shared-vol:/usr/share/nginx/html  # Named Volume (short syntax)
+
+volumes:
+  shared-vol:
