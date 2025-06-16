@@ -37,6 +37,7 @@ echo "Skript-Version 2: Jetzt verändert!"
 ###  Screenshots
 
 ![Bind Mount ausgeführt](./a_bind_mount_skript_ausgeführt.png)
+![Bind Mount ausgeführt](./a_bind_mount_skript_ausgeführt2.png)
 
 ---
 
